@@ -11,26 +11,21 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" >@color/white</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
 
     <style name="MySwitch" parent="Theme.AppCompat.Light">
         <!-- активное состояние (30% прозрачности для фона) -->
         <item name="colorControlActivated">@color/black</item>
-
         <!-- неактивное состояние ползунка -->
         <item name="colorSwitchThumbNormal">#ffcc0000</item>
-
         <!-- цвет дорожки для неактивного состояния (30% прозрачности) -->
         <item name="android:colorForeground">#ffcc0000</item>
     </style>
     <style name="RadioButtonStyle" parent="Theme.AppCompat.Light">
-        <!-- to change the radio checkbox color -->
         <item name="android:buttonTint">#ffcc0000</item>
-
-        <!-- to change the radio checkbox color -->
         <item name="android:textColor">@color/purple_500</item>
 
     </style>

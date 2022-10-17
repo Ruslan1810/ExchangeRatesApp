@@ -19,10 +19,11 @@
     <string name="title">Конвертор валют</string>
     <string name="detailed">Калькулятор</string>
     <string name="autoCompleteSetText">USD - United States Dollar</string>
-    <string name="textSortValueDesk">по знач - убыв</string>
-    <string name="textSortValueAsk">по знач - возр</string>
-    <string name="textSortAlfabDesk">по алф - убыв</string>
-    <string name="textSortAlfabAsk">по алф - возр</string>
+    <string name="textSortValueDesk">знач/убыв</string>
+    <string name="textSortValueAsk">знач/возр</string>
+    <string name="textSortAlfabDesk">алф/убыв</string>
+    <string name="textSortAlfabAsk">алф/возр</string>
+    <string name="titleFavoriteCurrtncies">ИЗБРАННЫЕ ВАЛЮТЫ</string>
 
     <string-array name="country_symbols">
         <item>AED - United Arab Emirates Dirham</item>

@@ -31,7 +31,6 @@ class FragmentSplash : Fragment() {
     }
 
     private fun initialization() {
-        requireActivity().actionBar?.hide()
         //определение ориентации
         if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             mBinding.appName.animate().translationY(-1300f).setDuration(3000).startDelay = 0
