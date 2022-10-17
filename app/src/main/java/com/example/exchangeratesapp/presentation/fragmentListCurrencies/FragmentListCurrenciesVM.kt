@@ -8,7 +8,8 @@ import com.example.exchangeratesapp.domain.usecases.SortByValueDeskUseCase
 import com.example.exchangeratesapp.domain.usecases.api.GetCurrenciesRatesUseCase
 import com.example.exchangeratesapp.domain.usecases.db.InsertFavoriteUseCase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,7 +21,7 @@ class FragmentListCurrenciesVM @Inject constructor(
     private val sortByValueDeskUseCase: SortByValueDeskUseCase
 ) : ViewModel() {
 
-    private var listCurrenciesLiveData = MutableLiveData<List<Currency>>()
+    private var listCurrenciesStateFlow = MutableStateFlow<List<Currency>>(listOf())
     private lateinit var listRates: List<Currency>
     fun getListCurrencies(typOfSorting: String = "") {
         viewModelScope.launch(Dispatchers.IO) {
@@ -32,21 +33,18 @@ class FragmentListCurrenciesVM @Inject constructor(
 
             when (typOfSorting) {
                 "alphabetically-desc" -> {
-                    listCurrenciesLiveData.postValue(
+                    listCurrenciesStateFlow.value =
                         sortAlphabetDeskUseCase.sortAlphabeticallyDesk(listRates)
-                    )
                 }
                 "ByValue-ask" -> {
-                    listCurrenciesLiveData.postValue(
+                    listCurrenciesStateFlow.value =
                         sortByValueAscUseCase.sortByValueAsk(listRates)
-                    )
                 }
                 "ByValue-desk" -> {
-                    listCurrenciesLiveData.postValue(
+                    listCurrenciesStateFlow.value =
                         sortByValueDeskUseCase.sortByValueDesk(listRates)
-                    )
                 }
-                else -> listCurrenciesLiveData.postValue(listRates)
+                else -> listCurrenciesStateFlow.value = listRates
             }
         }
     }
@@ -57,8 +55,8 @@ class FragmentListCurrenciesVM @Inject constructor(
         }
     }
 
-    fun getListCurrenciesLiveData(): LiveData<List<Currency>> {
-        return listCurrenciesLiveData
+    fun getListCurrenciesStateFlow(): StateFlow<List<Currency>> {
+        return listCurrenciesStateFlow
     }
 
     init {

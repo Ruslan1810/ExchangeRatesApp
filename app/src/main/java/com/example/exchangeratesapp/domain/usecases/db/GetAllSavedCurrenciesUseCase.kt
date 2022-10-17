@@ -5,7 +5,7 @@ import com.example.exchangeratesapp.domain.repository.DbRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetAllSavedMealsUseCase @Inject constructor(private val repository: DbRepository) {
+class GetAllSavedCurrenciesUseCase @Inject constructor(private val repository: DbRepository) {
     fun getAllSavedCurrencies(): Flow<List<Currency>?> {
         return repository.getAllSavedCurrencies()
     }

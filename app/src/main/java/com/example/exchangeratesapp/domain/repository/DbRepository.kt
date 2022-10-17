@@ -5,9 +5,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface DbRepository {
 
-    suspend fun insertFavorite(meal: Currency)
+    suspend fun insertFavorite(currency: Currency)
 
-    suspend fun updateFavorite(meal: Currency)
+    suspend fun updateFavorite(currency: Currency)
 
     fun getAllSavedCurrencies(): Flow<List<Currency>?>
 
@@ -15,5 +15,5 @@ interface DbRepository {
 
     suspend fun deleteCurrencyByName(id:String)
 
-    suspend fun deleteCurrency(meal: Currency)
+    suspend fun deleteCurrency(currency: Currency)
 }

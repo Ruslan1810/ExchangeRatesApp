@@ -62,6 +62,10 @@ class FragmentConvertorCurrency : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this,viewModelFactory)[FragmentConvertorCurrencyVM::class.java]
 
+        conversion()
+    }
+
+    private fun conversion() {
         val nominal = 1
         var amount = 0.0
 

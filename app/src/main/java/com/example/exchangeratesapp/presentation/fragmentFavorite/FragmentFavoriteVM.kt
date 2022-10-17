@@ -3,8 +3,8 @@ package com.example.exchangeratesapp.presentation.fragmentFavorite
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.exchangeratesapp.domain.model.Currency
-import com.example.exchangeratesapp.domain.usecases.db.DeleteMealUseCase
-import com.example.exchangeratesapp.domain.usecases.db.GetAllSavedMealsUseCase
+import com.example.exchangeratesapp.domain.usecases.db.DeleteCurrencyUseCase
+import com.example.exchangeratesapp.domain.usecases.db.GetAllSavedCurrenciesUseCase
 import com.example.exchangeratesapp.domain.usecases.db.InsertFavoriteUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
@@ -15,34 +15,35 @@ import javax.inject.Inject
 
 class FragmentFavoriteVM @Inject constructor(
     private val insertFavoriteUseCase: InsertFavoriteUseCase,
-    private val getAllSavedMealsUseCase: GetAllSavedMealsUseCase,
-    private val deleteMealUseCase: DeleteMealUseCase
+    private val getAllSavedCurrenciesUseCase: GetAllSavedCurrenciesUseCase,
+    private val deleteCurrencyUseCase: DeleteCurrencyUseCase
 ) : ViewModel() {
 
     private var favoriteCurrenciesStateFlow: StateFlow<List<Currency>?>? = null
 
     private fun getFavoritesCurrencies() {
 
-        favoriteCurrenciesStateFlow = getAllSavedMealsUseCase.getAllSavedCurrencies().stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(),
-            initialValue = listOf()
-        )
+        favoriteCurrenciesStateFlow = getAllSavedCurrenciesUseCase.getAllSavedCurrencies()
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(),
+                initialValue = listOf()
+            )
     }
 
-    fun deleteMeal(currency: Currency) {
+    fun deleteCurrency(currency: Currency) {
         viewModelScope.launch(Dispatchers.IO) {
-            deleteMealUseCase.deleteMeal(currency)
+            deleteCurrencyUseCase.deleteCurrency(currency)
         }
     }
 
-    fun saveMealFavorite(currency: Currency) {
+    fun saveCurrencyFavorite(currency: Currency) {
         viewModelScope.launch(Dispatchers.IO) {
             insertFavoriteUseCase.insertFavorite(currency)
         }
     }
 
-    fun getFavoritesMealsLiveData(): StateFlow<List<Currency>?>? {
+    fun getFavoriteCurrenciesStateFlow(): StateFlow<List<Currency>?>? {
         return favoriteCurrenciesStateFlow
     }
 

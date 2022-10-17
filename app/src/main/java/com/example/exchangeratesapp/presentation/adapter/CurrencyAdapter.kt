@@ -46,11 +46,11 @@ class CurrencyAdapter(private val context: Context):
     }
 
     interface OnItemClick {
-        fun onItemClick(meal: Currency)
+        fun onItemClick(currency: Currency)
     }
 
     interface OnFavoriteClick{
-        fun onFavoriteClick(meal: Currency)
+        fun onFavoriteClick(currency: Currency)
     }
 }
 

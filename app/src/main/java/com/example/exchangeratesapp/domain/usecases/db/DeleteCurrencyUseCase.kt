@@ -5,8 +5,8 @@ import com.example.exchangeratesapp.domain.repository.DbRepository
 import javax.inject.Inject
 
 
-class DeleteMealUseCase @Inject constructor(private val repository: DbRepository) {
-    suspend fun deleteMeal(currency: Currency){
+class DeleteCurrencyUseCase @Inject constructor(private val repository: DbRepository) {
+    suspend fun deleteCurrency(currency: Currency){
         return repository.deleteCurrency(currency)
     }
 }

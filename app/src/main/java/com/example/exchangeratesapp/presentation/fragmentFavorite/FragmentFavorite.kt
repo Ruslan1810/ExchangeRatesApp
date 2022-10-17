@@ -2,7 +2,6 @@ package com.example.exchangeratesapp.presentation.fragmentFavorite
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -90,7 +89,7 @@ class FragmentFavorite : Fragment() {
         currencyAdapter = CurrencyAdapter(requireActivity())
         binding.rvCurrencyFavorite.adapter = currencyAdapter
         lifecycleScope.launchWhenStarted {
-            viewModel.getFavoritesMealsLiveData()?.collect {
+            viewModel.getFavoriteCurrenciesStateFlow()?.collect {
                 currencyAdapter.submitList(it)
             }
         }
@@ -127,11 +126,11 @@ class FragmentFavorite : Fragment() {
     }
     private fun deleteCurrencyFromFavorite(currency: Currency){
         currency.let {
-            viewModel.deleteMeal(currency)
+            viewModel.deleteCurrency(currency)
 
             Snackbar.make(requireView(), "Валюта была удалена", Snackbar.LENGTH_LONG).apply {
                 setAction("Отменить") {
-                    viewModel.saveMealFavorite(currency)
+                    viewModel.saveCurrencyFavorite(currency)
                 }.show()
             }
             Toast.makeText(activity, "Deleted ${currency.name}", Toast.LENGTH_SHORT).show()

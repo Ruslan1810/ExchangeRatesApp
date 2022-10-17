@@ -26,7 +26,7 @@ interface DataModule {
     companion object {
         @Singleton
         @Provides
-        fun provideMealDao(application: Application): CurrencyDao {
+        fun provideCurrencyDao(application: Application): CurrencyDao {
             return CurrencyDatabase.getInstance(application).dao()
         }
         @Singleton

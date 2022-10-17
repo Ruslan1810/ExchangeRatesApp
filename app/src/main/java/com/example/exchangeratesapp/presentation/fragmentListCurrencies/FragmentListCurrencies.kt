@@ -2,7 +2,6 @@ package com.example.exchangeratesapp.presentation.fragmentListCurrencies
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -21,11 +19,10 @@ import com.example.exchangeratesapp.presentation.ViewModelFactory
 import com.example.exchangeratesapp.presentation.adapter.CurrencyAdapter
 import com.example.exchangeratesapp.di.App
 import com.example.exchangeratesapp.util.*
-import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 class FragmentListCurrencies : Fragment() {
-    companion object{
+    companion object {
         var BASE_CURRENCY = "USD"
         private var BASE_CURRENCY_FULL_NAME = "USD - United States Dollar"
     }
@@ -79,7 +76,6 @@ class FragmentListCurrencies : Fragment() {
         radioGroup.setOnCheckedChangeListener { _, checkedId ->
             getListCurrenciesByRadio(checkedId)
         }
-
     }
 
     private fun prepareTextInputLayout() {
@@ -124,11 +120,13 @@ class FragmentListCurrencies : Fragment() {
 
     private fun prepareCategoryRecyclerView() {
         binding.rvCurrency.adapter = currencyAdapter
-        viewModel.getListCurrenciesLiveData().observe(viewLifecycleOwner) {
-            currencyAdapter.submitList(it)
-            stopLoading()
-        }
 
+        lifecycleScope.launchWhenStarted {
+            viewModel.getListCurrenciesStateFlow().collect() {
+                currencyAdapter.submitList(it)
+                stopLoading()
+            }
+        }
         onItemRVclick()
         onFavoriteClick()
     }
