@@ -5,7 +5,6 @@ import com.example.exchangeratesapp.data.mapper.Mapper
 import com.example.exchangeratesapp.domain.model.Currency
 import com.example.exchangeratesapp.domain.model.ResponseRatesJson
 import com.example.exchangeratesapp.domain.repository.ApiRepository
-import com.example.exchangeratesapp.util.BASE_CURRENCY
 import javax.inject.Inject
 
 class ApiRepositoryImpl @Inject constructor(

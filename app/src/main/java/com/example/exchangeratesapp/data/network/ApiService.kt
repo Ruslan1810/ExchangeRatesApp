@@ -2,7 +2,7 @@ package com.example.exchangeratesapp.data.network
 
 import com.example.exchangeratesapp.data.network.model.ResponseRatesJsonApi
 import com.example.exchangeratesapp.data.network.model.ResponseSymbolsJson
-import com.example.exchangeratesapp.util.BASE_CURRENCY
+import com.example.exchangeratesapp.presentation.fragmentListCurrencies.FragmentListCurrencies
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -14,7 +14,7 @@ interface ApiService {
     @GET("latest")
     suspend fun getCurrencyRates(
         @Query("symbols") listSymbols: List<String>? = null,
-        @Query("base") base: String = BASE_CURRENCY
+        @Query("base") base: String = FragmentListCurrencies.BASE_CURRENCY
     ): ResponseRatesJsonApi
 
     @GET("convert")

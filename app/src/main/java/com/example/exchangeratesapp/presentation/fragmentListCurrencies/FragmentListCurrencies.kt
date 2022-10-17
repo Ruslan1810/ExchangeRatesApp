@@ -25,6 +25,11 @@ import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 class FragmentListCurrencies : Fragment() {
+    companion object{
+        var BASE_CURRENCY = "USD"
+        private var BASE_CURRENCY_FULL_NAME = "USD - United States Dollar"
+    }
+
     private lateinit var countries: List<String>
     private lateinit var viewModel: FragmentListCurrenciesVM
     private lateinit var currencyAdapter: CurrencyAdapter
