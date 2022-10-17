@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragmentSplash">
+
+    <fragment
+        android:id="@+id/fragmentSplash"
+        android:name="com.example.exchangeratesapp.presentation.fragmentSplash.FragmentSplash"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_fragmentSplash_to_fragmentListCurrencies"
+            app:destination="@id/fragmentListCurrencies"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentListCurrencies"
+        android:name="com.example.exchangeratesapp.presentation.fragmentListCurrencies.FragmentListCurrencies"
+        android:label="fragment_list_currencies"
+        tools:layout="@layout/fragment_list_currencies" >
+        <action
+            android:id="@+id/action_fragmentListCurrencies_to_fragmentFavorite"
+            app:destination="@id/fragmentFavorite" />
+        <action
+            android:id="@+id/action_fragmentListCurrencies_to_fragmentConvertorCurrency"
+            app:destination="@id/fragmentConvertorCurrency" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentFavorite"
+        android:name="com.example.exchangeratesapp.presentation.fragmentFavorite.FragmentFavorite"
+        android:label="fragment_favorite"
+        tools:layout="@layout/fragment_favorite" >
+        <action
+            android:id="@+id/action_fragmentFavorite_to_fragmentListCurrencies"
+            app:destination="@id/fragmentListCurrencies" />
+        <action
+            android:id="@+id/action_fragmentFavorite_to_fragmentConvertorCurrency"
+            app:destination="@id/fragmentConvertorCurrency" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentConvertorCurrency"
+        android:name="com.example.exchangeratesapp.presentation.fragmentConvetorCurrency.FragmentConvertorCurrency"
+        android:label="fragment_convertor_currency"
+        tools:layout="@layout/fragment_convertor_currency" >
+        <action
+            android:id="@+id/action_fragmentConvertorCurrency_to_fragmentListCurrencies"
+            app:destination="@id/fragmentListCurrencies" />
+        <action
+            android:id="@+id/action_fragmentConvertorCurrency_to_fragmentFavorite"
+            app:destination="@id/fragmentFavorite" />
+    </fragment>
+</navigation>
