@@ -25,7 +25,6 @@ class FragmentListCurrenciesVM @Inject constructor(
     fun getListCurrencies(typOfSorting: String = "") {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                delay(1000)
                 listRates = getCurrenciesRatesUseCase.getCurrencyRates()
             } catch (e: Exception) {
                 e.printStackTrace()
