@@ -20,10 +20,7 @@ import com.example.exchangeratesapp.domain.model.Currency
 import com.example.exchangeratesapp.presentation.ViewModelFactory
 import com.example.exchangeratesapp.presentation.adapter.CurrencyAdapter
 import com.example.exchangeratesapp.di.App
-import com.example.exchangeratesapp.util.BASE_CURRENCY
-import com.example.exchangeratesapp.util.BASE_CURRENCY_KEY
-import com.example.exchangeratesapp.util.CURRENCY_NAME_KEY
-import com.example.exchangeratesapp.util.CURRENCY_VALUE_KEY
+import com.example.exchangeratesapp.util.*
 import kotlinx.coroutines.delay
 import javax.inject.Inject
 
@@ -87,12 +84,13 @@ class FragmentListCurrencies : Fragment() {
         )
         val autoCompleteTV = binding.autoCompleteTv
         autoCompleteTV.apply {
-            setText(context.getString(R.string.autoCompleteSetText))
+            setText(BASE_CURRENCY_FULL_NAME)
             setAdapter(arrayAdapter)
             setOnItemClickListener { _, _, it, _ ->
                 val fullNameCurrency = autoCompleteTV.text.toString()
                 stopLoading()
                 BASE_CURRENCY = fullNameCurrency.substring(0, 3)
+                BASE_CURRENCY_FULL_NAME = fullNameCurrency
                 getListCurrenciesByRadio(binding.radioGroup.checkedRadioButtonId)
                 showLoading()
                 Toast.makeText(requireActivity(), BASE_CURRENCY, Toast.LENGTH_SHORT)
