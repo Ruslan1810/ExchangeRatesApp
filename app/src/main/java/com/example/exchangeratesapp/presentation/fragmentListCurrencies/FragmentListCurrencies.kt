@@ -46,7 +46,6 @@ class FragmentListCurrencies : Fragment() {
         super.onAttach(context)
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -61,7 +60,6 @@ class FragmentListCurrencies : Fragment() {
         viewModel = ViewModelProvider(this, viewModelFactory)[FragmentListCurrenciesVM::class.java]
         currencyAdapter = CurrencyAdapter(requireActivity())
 
-        showLoading()
         prepareRadioGroup()
         prepareCategoryRecyclerView()
     }
@@ -90,11 +88,10 @@ class FragmentListCurrencies : Fragment() {
             setAdapter(arrayAdapter)
             setOnItemClickListener { _, _, it, _ ->
                 val fullNameCurrency = autoCompleteTV.text.toString()
-                stopLoading()
                 BASE_CURRENCY = fullNameCurrency.substring(0, 3)
                 BASE_CURRENCY_FULL_NAME = fullNameCurrency
+
                 getListCurrenciesByRadio(binding.radioGroup.checkedRadioButtonId)
-                showLoading()
                 Toast.makeText(requireActivity(), BASE_CURRENCY, Toast.LENGTH_SHORT)
                     .show()
             }
@@ -120,11 +117,24 @@ class FragmentListCurrencies : Fragment() {
     }
 
     private fun prepareCategoryRecyclerView() {
+
         binding.rvCurrency.adapter = currencyAdapter
         lifecycleScope.launchWhenStarted {
-            viewModel.getListCurrenciesStateFlow().collect() {
-                currencyAdapter.submitList(it)
-                stopLoading()
+            viewModel.state.collect() {
+                it?.let {
+                    if(it.isError){
+                        Toast.makeText(requireActivity(),
+                            "Ошибка при получении данных из сети", Toast.LENGTH_SHORT).show()
+                    }
+                    if(it.isInProgress){
+                        showLoading()
+                    }
+                    if(it.listRates.isNotEmpty()){
+                        stopLoading()
+                        currencyAdapter.submitList(it.listRates)
+                    }
+
+                }
             }
         }
         onItemRVclick()
@@ -166,6 +176,7 @@ class FragmentListCurrencies : Fragment() {
         binding.rvCurrency.visibility = View.INVISIBLE
         binding.progressBar?.let {
             it.visibility = View.VISIBLE
+            println()
         }
 
     }

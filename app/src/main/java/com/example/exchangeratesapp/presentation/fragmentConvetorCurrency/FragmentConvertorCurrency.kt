@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -75,6 +76,7 @@ class FragmentConvertorCurrency : Fragment() {
             viewModel.state.collect() {
                 it?.let {
                     if (it.isError) {
+                        Log.d("StateError", "Ошибка вычисления")
                         Toast.makeText(requireActivity(), "Ошибка вычисления", Toast.LENGTH_SHORT)
                             .show()
                     }

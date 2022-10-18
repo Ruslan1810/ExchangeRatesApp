@@ -7,7 +7,9 @@ import com.example.exchangeratesapp.domain.usecases.SortByValueAscUseCase
 import com.example.exchangeratesapp.domain.usecases.SortByValueDeskUseCase
 import com.example.exchangeratesapp.domain.usecases.api.GetCurrenciesRatesUseCase
 import com.example.exchangeratesapp.domain.usecases.db.InsertFavoriteUseCase
+import com.example.exchangeratesapp.presentation.State
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -21,30 +23,41 @@ class FragmentListCurrenciesVM @Inject constructor(
     private val sortByValueDeskUseCase: SortByValueDeskUseCase
 ) : ViewModel() {
 
-    private var listCurrenciesStateFlow = MutableStateFlow<List<Currency>>(listOf())
-    private lateinit var listRates: List<Currency>
-    fun getListCurrencies(typOfSorting: String = "") {
+    private var listRates: List<Currency> = listOf()
+    private val _state = MutableStateFlow<State?>(value = null)
+    val state: StateFlow<State?>
+        get() = _state
+
+    fun getListCurrencies(typeOfSorting: String = "") {
         viewModelScope.launch(Dispatchers.IO) {
+            _state.value = State(isInProgress = true)
+            delay(500)
             try {
                 listRates = getCurrenciesRatesUseCase.getCurrencyRates()
             } catch (e: Exception) {
                 e.printStackTrace()
+                _state.value = State(isError = true)
             }
-
-            when (typOfSorting) {
+            when (typeOfSorting) {
                 "alphabetically-desc" -> {
-                    listCurrenciesStateFlow.value =
+                    _state.value = State(
+                        listRates =
                         sortAlphabetDeskUseCase.sortAlphabeticallyDesk(listRates)
+                    )
                 }
                 "ByValue-ask" -> {
-                    listCurrenciesStateFlow.value =
+                    _state.value = State(
+                        listRates =
                         sortByValueAscUseCase.sortByValueAsk(listRates)
+                    )
                 }
                 "ByValue-desk" -> {
-                    listCurrenciesStateFlow.value =
+                    _state.value = State(
+                        listRates =
                         sortByValueDeskUseCase.sortByValueDesk(listRates)
+                    )
                 }
-                else -> listCurrenciesStateFlow.value = listRates
+                else -> _state.value = State(listRates = listRates)
             }
         }
     }
@@ -53,10 +66,6 @@ class FragmentListCurrenciesVM @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             insertFavoriteUseCase.insertFavorite(currency)
         }
-    }
-
-    fun getListCurrenciesStateFlow(): StateFlow<List<Currency>> {
-        return listCurrenciesStateFlow
     }
 
     init {
