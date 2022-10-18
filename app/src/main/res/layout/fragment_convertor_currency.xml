@@ -55,7 +55,7 @@
       android:src="@drawable/rus" />
 
   <EditText
-      android:id="@+id/input_for_rub"
+      android:id="@+id/input_for_base"
       android:layout_width="0dp"
       android:layout_height="48dp"
       android:layout_gravity="center_vertical"

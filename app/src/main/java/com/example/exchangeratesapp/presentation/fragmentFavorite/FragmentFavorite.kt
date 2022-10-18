@@ -136,4 +136,8 @@ class FragmentFavorite : Fragment() {
             Toast.makeText(activity, "Deleted ${currency.name}", Toast.LENGTH_SHORT).show()
         }
     }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

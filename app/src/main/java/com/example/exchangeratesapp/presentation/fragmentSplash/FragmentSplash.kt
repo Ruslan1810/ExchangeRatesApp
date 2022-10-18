@@ -7,9 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.exchangeratesapp.R
 import com.example.exchangeratesapp.databinding.FragmentSplashBinding
+import kotlinx.coroutines.delay
 
 class FragmentSplash : Fragment() {
 
@@ -39,11 +41,10 @@ class FragmentSplash : Fragment() {
             mBinding.appName.animate().translationY(-700f).setDuration(2000).startDelay = 0
             mBinding.lottie.animate().translationX(2000F).setDuration(3000).startDelay = 2500
         }
-
-        view?.postDelayed({
+        lifecycleScope.launchWhenResumed {
+            delay(5000)
             findNavController().navigate(R.id.action_fragmentSplash_to_fragmentListCurrencies)
-            requireActivity()
-        }, 5000)
+        }
     }
 
 

@@ -57,6 +57,7 @@ class FragmentListCurrencies : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         viewModel = ViewModelProvider(this, viewModelFactory)[FragmentListCurrenciesVM::class.java]
         currencyAdapter = CurrencyAdapter(requireActivity())
 
@@ -120,7 +121,6 @@ class FragmentListCurrencies : Fragment() {
 
     private fun prepareCategoryRecyclerView() {
         binding.rvCurrency.adapter = currencyAdapter
-
         lifecycleScope.launchWhenStarted {
             viewModel.getListCurrenciesStateFlow().collect() {
                 currencyAdapter.submitList(it)
@@ -164,18 +164,21 @@ class FragmentListCurrencies : Fragment() {
 
     private fun showLoading() {
         binding.rvCurrency.visibility = View.INVISIBLE
-        val progressBar = binding.progressBar
-        if (progressBar != null) {
-            progressBar.visibility = View.VISIBLE
+        binding.progressBar?.let {
+            it.visibility = View.VISIBLE
         }
+
     }
 
     private fun stopLoading() {
         binding.rvCurrency.visibility = View.VISIBLE
-        val progressBar = binding.progressBar
-        if (progressBar != null) {
-            progressBar.visibility = View.INVISIBLE
+        binding.progressBar?.let {
+            it.visibility = View.INVISIBLE
         }
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
 

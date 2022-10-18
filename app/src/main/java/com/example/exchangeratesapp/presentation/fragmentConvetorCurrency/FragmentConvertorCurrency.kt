@@ -28,6 +28,7 @@ class FragmentConvertorCurrency : Fragment() {
     private var _binding: FragmentConvertorCurrencyBinding? = null
     private val binding: FragmentConvertorCurrencyBinding
         get() = _binding ?: throw RuntimeException("FragmentConvertorCurrencyBinding is null")
+    lateinit var mapper: Mapper
 
     private val component by lazy {
         (requireActivity().application as App).component
@@ -60,31 +61,46 @@ class FragmentConvertorCurrency : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this,viewModelFactory)[FragmentConvertorCurrencyVM::class.java]
+        mapper = Mapper()
+        viewModel =
+            ViewModelProvider(this, viewModelFactory)[FragmentConvertorCurrencyVM::class.java]
 
+        initView()
         conversion()
+        prepareTextChangedListener()
     }
 
     private fun conversion() {
+        lifecycleScope.launchWhenStarted {
+            viewModel.state.collect() {
+                it?.let {
+                    if (it.isError) {
+                        Toast.makeText(requireActivity(), "Ошибка вычисления", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                    binding.outputForCurrency.text = it.result
+                }
+            }
+        }
+    }
+
+    private fun initView() {
         val nominal = 1
-        var amount = 0.0
 
         "$nominal $base_symbol = $value $symbol".also { binding.currencyComparison.text = it }
         binding.codeCurrency.text = symbol
         binding.codeBase.text = base_symbol
-        base_symbol?.let { Mapper().getIdResource(it,requireActivity()) }
+        base_symbol?.let { mapper.getIdResource(it, requireActivity()) }
             ?.let { binding.flagRus.setImageResource(it) }
-        symbol?.let { Mapper().getIdResource(it,requireActivity()) }
+        symbol?.let { mapper.getIdResource(it, requireActivity()) }
             ?.let { binding.flagCountry.setImageResource(it) }
+    }
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.result.collect {
-                binding.outputForCurrency.text = it
-            }
-        }
-        binding.inputForRub.addTextChangedListener(object : TextWatcher {
+    private fun prepareTextChangedListener() {
+        var amount = 0.0
+        binding.inputForBase.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                var strOfInput: String = binding.inputForRub.text.toString()
+                var strOfInput: String = binding.inputForBase.text.toString()
 
                 try {
                     if (strOfInput.isEmpty()) strOfInput = "0"
@@ -94,11 +110,11 @@ class FragmentConvertorCurrency : Fragment() {
 
                     if (strOfInput.isNotEmpty()) {
                         Toast.makeText(activity, "Введите число", Toast.LENGTH_SHORT).show()
-                        binding.inputForRub.setText(
-                            strOfInput.substring(0, binding.inputForRub.length() - 1)
+                        binding.inputForBase.setText(
+                            strOfInput.substring(0, binding.inputForBase.length() - 1)
                         )
                         //курсор в конец строки
-                        binding.inputForRub.setSelection(binding.inputForRub.text.length)
+                        binding.inputForBase.setSelection(binding.inputForBase.text.length)
                     }
                 }
                 value?.let { viewModel.calculation(it, amount) }
@@ -114,6 +130,11 @@ class FragmentConvertorCurrency : Fragment() {
             ) {
             }
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }
