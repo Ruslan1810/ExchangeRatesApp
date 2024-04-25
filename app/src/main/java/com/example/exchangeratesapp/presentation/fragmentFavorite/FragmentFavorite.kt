@@ -32,7 +32,7 @@ class FragmentFavorite : Fragment() {
     private lateinit var currencyAdapter: CurrencyAdapter
     private var _binding: FragmentFavoriteBinding? = null
     private val binding: FragmentFavoriteBinding
-        get() = _binding ?: throw RuntimeException("FragmentFavoriteBinding is null  commit1 commit2")
+        get() = _binding ?: throw RuntimeException("FragmentFavoriteBinding is null  commit1 commit2 commit3")
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
